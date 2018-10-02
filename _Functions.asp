@@ -62,24 +62,24 @@
     ' Stores a value in a reference, being it scalar or object. (meant for function return)
     ' @param {function} procedure
     ' @param {mixed} value
-    Function return(byref procedure, value)
+    Sub return(byref procedure, value)
         if IsObject(value) then
             Set procedure = value
         else
             procedure = value
         end if
-    End Function
+    End Sub
     ' Stores a value in a reference, being it scalar or object.
     ' Does not work with Dictionary keys.
     ' @param {function} procedure
     ' @param {mixed} value
-    Function set_(byref reference, value)
+    Sub set_(byref reference, value)
         if IsObject(value) then
             Set reference = value
         else
             reference = value
         end if
-    End Function
+    End Sub
 ' Seach collection
     ' Checks if $haystack collection has $needle value.
     ' @param {mixed} needle

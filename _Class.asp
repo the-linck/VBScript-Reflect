@@ -61,7 +61,7 @@ Class Reflection_Class
     ' Gets the type of a instance member.
     '
     ' @param {string} Member_
-    ' @return {string|Empty}
+    ' @return {string}
     Public Property Get Member( Member_ )
         ' Never will be an object
         Member = Instance_Fields(Member_)
@@ -69,16 +69,10 @@ Class Reflection_Class
     ' Sets the type of a instance member.
     '
     ' @param {string} Member_
-    ' @param {string|Empty} Type_
+    ' @param {mixed} Type_
     ' @return {string}
     Public Property Let Member( Member_, Type_ )
-        Dim ValueType : ValueType = TypeName(Type_)
-
-        if ValueType = "String" or ValueType = "Empty" then
-            Instance_Fields(Member_) = Type_
-        else
-            Err.Raise 13, "Invalid member type"
-        end if
+        Instance_Fields(Member_) = Type_
     End Property
 
 
@@ -147,6 +141,12 @@ Class Reflection_Class
             Next
 
             Set GetDefault = Result
+        End Function
+        ' Builds a new Entity of this class.
+        '
+        ' @return {Object}
+        Public Function GetInstance()
+            Execute "Set GetInstance = new " & Class_Name
         End Function
         ' Builds a Dictionary containing all instance fields names (keys) and
         ' types (values).
@@ -257,7 +257,7 @@ Class Reflection_Class_Loader
                 Set FromDictionary = Nothing
             else
                 Dim Key
-                For Each Key in MemberCache(Class_Object)
+                For Each Key in Members(Class_Object)
                     if Source.Exists(Key) then
                         Result(Key) = Source(Key)
                     end if
@@ -309,7 +309,7 @@ Class Reflection_Class_Loader
 
                         ' Avoiding new object (and inloop verification)
                         Set JSON = Source(0)
-                        For Each Key in MemberCache(Class_Object)
+                        For Each Key in Members(Class_Object)
                             ' There's no way to know if the property exists in ASPJson
                             Result(0)(Key) = JSON(Key)
                         Next
@@ -317,13 +317,13 @@ Class Reflection_Class_Loader
                         Execute "For Index = Index To 1 Step -1" & VbCrLf &_
                             "Set JSON = Source(Index)" & VbCrLf &_
                             "Set Result(Index) = new " & Class_Object.Name & VbCrLf &_
-                            "For Each Key in MemberCache(Class_Object)" & VbCrLf &_
+                            "For Each Key in Members(Class_Object)" & VbCrLf &_
                                 "Result(Index)(Key) = JSON(Key)" & VbCrLf &_
                             "Next" & VbCrLf &_
                         "Next"
                         FromJSON = Result
                     Case "JSONobject"
-                        For Each Key in MemberCache(Class_Object)
+                        For Each Key in Members(Class_Object)
                             ' There's no way to know if the property exists in ASPJson
                             Result(Key) = Source(Key)
                         Next
@@ -381,7 +381,7 @@ Class Reflection_Class_Loader
                 Set FromRequest = Nothing
             else
                 Dim Key
-                For Each Key in MemberCache(Class_Object)
+                For Each Key in Members(Class_Object)
                     Key = Prefix & Key
                     if not IsEmpty(Source(Key)) then
                         Result(Key) = Source(Key)
@@ -425,7 +425,7 @@ Class Reflection_Class_Loader
                     Dim Key
 
                     Set Result = CreateObject("Scripting.Dictionary")
-                    For Each Key in MemberCache(Entity.Self)
+                    For Each Key in Members(Entity.Self)
                         Result.Add Key, Entity(Key)
                     Next
                 else
@@ -451,7 +451,7 @@ Class Reflection_Class_Loader
                 if property_exists(Entity, "SupportsReflection") and TypeName(Entity) <> "Reflection_Class" then
 
                     Set Result = new JSONobject
-                    For Each Key in MemberCache(Entity.Self)
+                    For Each Key in Members(Entity.Self)
                         Result.Add Key, Entity(Key)
                     Next
                 else
@@ -469,7 +469,7 @@ Class Reflection_Class_Loader
                         end if
 
                         Set JSON = new JSONobject
-                        For Each Key in MemberCache(Current.Self)
+                        For Each Key in Members(Current.Self)
                             JSON.Add Key, Current(Key)
                         Next
                         Result.push JSON
@@ -505,12 +505,12 @@ Class Reflection_Class_Loader
         '
         ' @param {Reflection_Class} Class_
         ' @return {Dictionary}
-        Private Function MemberCache( ByRef Class_ )
+        Private Function Members( ByRef Class_ )
             if Cache_LastClass <> Class_.Name then
                 Set Cache_ClassMember = Class_.GetMembers()
             end if
 
-            Set MemberCache = Cache_ClassMember
+            Set Members = Cache_ClassMember
         End Function
         ' Gets the Reflection_Class object associated with given Class_ name.
         ' If there's no object associated yet, performs Active Class Loading,
@@ -529,6 +529,7 @@ Class Reflection_Class_Loader
 
             Set Load = Result
         End Function
+        
 End Class
 
 ' Default instance of Reflection_Class_Loader
