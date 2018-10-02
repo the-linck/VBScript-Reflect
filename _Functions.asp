@@ -97,10 +97,16 @@
                     Case 1
                         Dim BeginIndex
                         Dim EndIndex
+                        BeginIndex = 0
+                        EndIndex = UBound(haystack)
+
                         Do Until EndIndex < BeginIndex
                             in_array = (haystack(EndIndex) = needle or haystack(BeginIndex) = needle)
-                            if (in_array or EndIndex = BeginIndex) then
+                            if (in_array or EndIndex <= BeginIndex) then
                                 Exit Do
+                            else
+                                BeginIndex = BeginIndex + 1
+                                EndIndex = EndIndex - 1
                             end if
                         Loop
                 End Select
