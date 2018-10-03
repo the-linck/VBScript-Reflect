@@ -149,3 +149,27 @@ Provides the reflection capability to ASP Classes, adding to it the following pu
         ***REQUIRES ASPJSON***
 
 
+
+## Static initializer and Instance initializer
+
+Every Entity may include this two methods for class initialization, wich respectively initialize the Reflection_Class and the Entity itself.
+
+Both methods are optional, but it's recomended to provide them to ensure that every functionality will work as expected.
+
+The *Class_Initialize* and *Class_Terminate* are providade on _Entity.asp to provide the reflection funcitionality, so you cannot provide another version of them.
+
+
+### Static_Initialize()
+
+Called only once: when the class is initialized. It's meant to use for defining the members exposed to reflection (and their types) and set static fields.
+
+
+### Instance_Initialize()
+
+Called at every Entity initialization, acting as a parameter-less constructor.
+
+
+# TODO
+
+* Provide dictionary for adding arbitrary fields in object
+* Detect if the field accessed is listed on the class
