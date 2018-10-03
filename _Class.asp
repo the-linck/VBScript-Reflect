@@ -483,11 +483,11 @@ Class Reflection_Class_Loader
                 Set ToJSON = Nothing
             end if
         End Function
-        ' Exports an Entity to a JSON String.
+        ' Exports an Entities to a JSON String.
         '
         ' @param {Object|Object[]} Entity
         ' @return {String}
-        Public Function Tostring( ByRef Entity )
+        Public Function ToString( ByRef Entity )
             Dim Result : Set Result = ToJSON(Entity)
 
             if Result Is Nothing then
@@ -504,8 +504,8 @@ Class Reflection_Class_Loader
         ' If there's no cached members object yet, loads it from the class,
         '
         ' @param {Reflection_Class} Class_
-        ' @return {Dictionary}
-        Private Function Members( ByRef Class_ )
+        ' @return {Scripting.Dictionary}
+        Public Function Members( ByRef Class_ )
             if Cache_LastClass <> Class_.Name then
                 Set Cache_ClassMember = Class_.GetMembers()
             end if
