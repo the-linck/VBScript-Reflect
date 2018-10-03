@@ -1,5 +1,5 @@
 <!-- #include file="_Functions.asp" -->
-<!--#include file="AspJSON/jsonObject.class.asp.asp"-->
+<!--#include file="AspJSON/jsonObject.class.asp"-->
 <%
 ' Encapsulates the metadata of a class to provide some reflection capabilities.
 ' Also provides hability to set static fields on the class.
