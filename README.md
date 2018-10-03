@@ -1,4 +1,4 @@
-# VBScript-Reflect (Stand-alone edition)
+# VBScript-Reflect (Production edition)
 This library provides a simple implementation of reflection using ASP Classes, allowing you to use classes more in an Object Oriented than the strcutural style of ASP.
 
 You may, optionaly, use **ASPJson** in your project to enable the JSON exportation capabilities of this library.
