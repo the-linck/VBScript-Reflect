@@ -1,9 +1,14 @@
 <%
 ' Reference to the Reflection_Class backing this entity.
+'
+' @var {Reflection_Class}
 Private Class_
 
 
+' Gets the value of a field on the Entity, acting like a string-keyed indexer.
 '
+' @param {string} Field_
+' @return {mixed}
 Public Default Property Get Field( Field_ )
     Dim Key : Key = "Me." & Field_
 
@@ -13,7 +18,10 @@ Public Default Property Get Field( Field_ )
         " Field = " & Key &_
     " end if"
 End Property
+' Sets the value of a field on the Entity, acting like a string-keyed indexer.
 '
+' @param {string} Field_
+' @param {mixed} Value
 Public Property Let Field( Field_, Value )
     Dim Key : Key = "Me." & Field_
 
@@ -26,14 +34,23 @@ End Property
 
 
 
+' Getter of the Reflection_Class backing this entity.
+'
+' @return {Reflection_Class}
 Public Property Get Self( )
     Set Self = Class_
 End Property
 
+' Indicates that this Entity supports reflection.
+'
+' @return {bool(true)}
 Public Property Get SupportsReflection( )
     SupportsReflection = true
 End Property
 
+' Alias for *Me* property on the Entity.
+'
+' @return {bool(true)}
 Private Property Get This( )
     Set This = Me
 End Property
