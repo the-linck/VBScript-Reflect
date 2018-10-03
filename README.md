@@ -3,8 +3,6 @@ This library provides a simple implementation of reflection using ASP Classes, a
 
 You may, optionaly, use **ASPJson** in your project to enable the JSON exportation capabilities of this library.
 
-This edition already ships ASPJson, making all functionalities work out-of-box.
-
 
 
 # Project structure
