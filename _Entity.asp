@@ -34,7 +34,7 @@ Public Property Get SupportsReflection( )
     SupportsReflection = true
 End Property
 
-Public Property Get This( )
+Private Property Get This( )
     Set This = Me
 End Property
 
@@ -99,7 +99,7 @@ End Property
     ' Creates/feeds Entities with a JSON string present on session Key.
     '
     ' @param {string} Key
-    ' @return {Object}
+    ' @return {Object|Object[]}
     Public Function FromSession(Key)
         Call Class_Loader.FromSession(Me, Key)
 
@@ -108,7 +108,7 @@ End Property
     ' Creates/feeds Entities with data present on given Source.
     '
     ' @param {string} Source
-    ' @return {Object}
+    ' @return {Object|Object[]}
     Public Function FromString(Source)
         set_ FromString, Class_Loader.FromString(Me, Source)
     End Function
