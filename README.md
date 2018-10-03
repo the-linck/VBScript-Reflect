@@ -1,7 +1,9 @@
-# VBScript-Reflect
+# VBScript-Reflect (Stand-alone edition)
 This library provides a simple implementation of reflection using ASP Classes, allowing you to use classes more in an Object Oriented than the strcutural style of ASP.
 
 You may, optionaly, use **ASPJson** in your project to enable the JSON exportation capabilities of this library.
+
+This edition already ships ASPJson, making all functionalities work out-of-box.
 
 
 
@@ -92,24 +94,19 @@ Provides the following properties and functions:
         Creates/feeds Entities with data present on given Source
     * *Entity|Entity[]* **FromJSON**(*string|Reflection_Class|Entity* Entity, *JSONobject|JSONarray|string* Source)  
         Creates/feeds Entities with data present on given Source  
-        ***REQUIRES ASPJSON***
     * *Entity* **FromRequest**(*string|Reflection_Class|Entity* Entity, *string* Method, *string* Prefix)  
         Creates/feeds Entities with data present on given request Method, using given Prefix to identify fields names
     * *Entity|Entity[]* **FromSession**(*string|Reflection_Class|Entity* Entity, *string* Key)  
         Creates/feeds Entities with a JSON string present on session Key  
-        ***REQUIRES ASPJSON***
     * *Entity|Entity[]* **Fromstring**(*string|Reflection_Class|Entity* Entity, *string* Source)  
         Creates/feeds Entities with data present on given Source  
-        ***REQUIRES ASPJSON***
 * *Export*
     * *Scripting.Dictionary* **FromDictionary**(*Entity* Entity)  
         Exports an Entity to a Dictionary
     * *JSONarray|JSONobject* **ToJSON**(*Entity|Entity[]* Entity)  
         Exports Entities to a JSONobject or a JSONarray
-        ***REQUIRES ASPJSON***
     * *String* **ToString**(*Entity|Entity[]* Entity)  
         Exports Entities to a JSON String
-        ***REQUIRES ASPJSON***
 
 
 
@@ -129,24 +126,19 @@ Provides the reflection capability to ASP Classes, adding to it the following pu
         Creates/feeds Entities with data present on given Source
     * *Entity|Entity[]* **FromJSON**(*JSONobject|JSONarray|string* Source)  
         Creates/feeds Entities with data present on given Source  
-        ***REQUIRES ASPJSON***
     * *Entity* **FromRequest**(*string* Method)  
         Creates/feeds Entities with data present on given request Method, using given Prefix to identify fields names
     * *Entity|Entity[]* **FromSession**(*string* Key)  
         Creates/feeds Entities with a JSON string present on session Key  
-        ***REQUIRES ASPJSON***
     * *Entity|Entity[]* **Fromstring**(*string* Source)  
         Creates/feeds Entities with data present on given Source  
-        ***REQUIRES ASPJSON***
 * *Export*
     * *Scripting.Dictionary* **AsDictionary**  
         Exports this Entity to a Dictionary
     * *JSONarray|JSONobject* **AsJSON**  
         Exports this Entity to a JSONobject
-        ***REQUIRES ASPJSON***
     * *String* **AsString**  
         Exports this Entity to a JSON String
-        ***REQUIRES ASPJSON***
 
 
 
