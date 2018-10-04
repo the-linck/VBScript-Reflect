@@ -73,7 +73,10 @@ End Property
         end if
 
         if method_exists(Me, "Instance_Initialize") then
-            call Instance_Initialize()
+            ' Adding possibility of skipping initializer (for performance)
+            if not Self.Field("Skip_Initializer") then
+                call Instance_Initialize()
+            end if
         end if
     End Sub
 
