@@ -13,9 +13,9 @@
         call Err.Clear()
         On Error Resume Next
             Set procedure = GetRef(function_name)
-        On Error Goto 0
 
-        function_exists = (Err.Number = 0)
+            function_exists = (Err.Number = 0)
+        On Error Goto 0
     End Function
     ' Checks if the object has a method.
     ' @param {object} object_
@@ -27,9 +27,9 @@
         call Err.Clear()
         On Error Resume Next
             Execute "Set procedure =  GetRef(object_. " & method_ & ") "
-        On Error Goto 0
 
-        method_exists = (Err.Number = 0)
+            method_exists = (Err.Number = 0)
+        On Error Goto 0
     End Function
     ' Checks if the object has a property.
     ' @param {object} object_
@@ -41,9 +41,9 @@
         call Err.Clear()
         On Error Resume Next
             Execute "set_ value, object_." & property_
-        On Error Goto 0
 
-        property_exists = (Err.Number = 0)
+            property_exists = (Err.Number = 0)
+        On Error Goto 0
     End Function
 
 
