@@ -232,16 +232,16 @@ Class Reflection_Class_Loader
         ' @return {Object}
         Public Function FromDictionary( Entity, ByVal Source )
             Dim Result
-            
+
             Dim Class_Object
 
             Select Case TypeName(Entity)
                 Case "Reflection_Class"
                     Set Class_Object = Entity
-                    Execute "set Result = new " & Class_Object.Name
+                    Set Result = Class_Object.GetInstance()
                 Case "String"
-                    Set Class_Object = LoadClass(Entity)
-                    Execute "set Result = new " & Class_Object.Name
+                    Set Class_Object = Load(Entity)
+                    Set Result = Class_Object.GetInstance()
                 Case Else
                     if IsObject(Entity) then
                         if property_exists( Entity, "SupportsReflection") then
@@ -253,7 +253,7 @@ Class Reflection_Class_Loader
                     end if
             End Select
 
-            if IsEmpty(Result) then
+            if IsEmpty(Source) then
                 Set FromDictionary = Nothing
             else
                 Dim Key
@@ -273,16 +273,15 @@ Class Reflection_Class_Loader
         ' @return {Object|Object[]}
         Public Function FromJSON( Entity, ByVal Source )
             Dim Result
-            
             Dim Class_Object
 
             Select Case TypeName(Entity)
                 Case "Reflection_Class"
                     Set Class_Object = Entity
-                    Execute "set Result = new " & Class_Object.Name
+                    Set Result = Class_Object.GetInstance()
                 Case "String"
-                    Set Class_Object = LoadClass(Entity)
-                    Execute "set Result = new " & Class_Object.Name
+                    Set Class_Object = Load(Entity)
+                    Set Result = Class_Object.GetInstance()
                 Case Else
                     if IsObject(Entity) then
                         if property_exists( Entity, "SupportsReflection") then
@@ -314,13 +313,13 @@ Class Reflection_Class_Loader
                             Result(0)(Key) = JSON(Key)
                         Next
 
-                        Execute "For Index = Index To 1 Step -1" & VbCrLf &_
-                            "Set JSON = Source(Index)" & VbCrLf &_
-                            "Set Result(Index) = new " & Class_Object.Name & VbCrLf &_
-                            "For Each Key in Members(Class_Object)" & VbCrLf &_
-                                "Result(Index)(Key) = JSON(Key)" & VbCrLf &_
-                            "Next" & VbCrLf &_
-                        "Next"
+                        For Index = Index To 1 Step -1
+                            Set JSON = Source(Index)
+                            Set Result(Index) = Class_Object.GetInstance()
+                            For Each Key in Members(Class_Object)
+                                Result(Index)(Key) = JSON(Key)
+                            Next
+                        Next
                         FromJSON = Result
                     Case "JSONobject"
                         For Each Key in Members(Class_Object)
@@ -340,8 +339,8 @@ Class Reflection_Class_Loader
         '
         ' @param {string|Reflection_Class|Object} Entity
         ' @param {string} Method [Form|Post|Querystring|Get]
-        ' @param {string} Prefix 
-        ' @return {Object}
+        ' @param {string} Prefix
+        ' @return {Object|Object[]}
         Public Function FromRequest( Entity, ByVal Method, ByVal Prefix )
             Dim Result
 
@@ -351,10 +350,10 @@ Class Reflection_Class_Loader
             Select Case TypeName(Entity)
                 Case "Reflection_Class"
                     Set Class_Object = Entity
-                    Execute "set Result = new " & Class_Object.Name
+                    Set Result = Class_Object.GetInstance()
                 Case "String"
-                    Set Class_Object = LoadClass(Entity)
-                    Execute "set Result = new " & Class_Object.Name
+                    Set Class_Object = Load(Entity)
+                    Set Result = Class_Object.GetInstance()
                 Case Else
                     if IsObject(Entity) then
                         if property_exists( Entity, "SupportsReflection") then
@@ -377,19 +376,41 @@ Class Reflection_Class_Loader
                 Prefix = ""
             end if
 
-            if IsEmpty(Result) then
-                Set FromRequest = Nothing
-            else
-                Dim Key
-                For Each Key in Members(Class_Object)
-                    Key = Prefix & Key
-                    if not IsEmpty(Source(Key)) then
-                        Result(Key) = Source(Key)
-                    end if
-                Next
+            Dim Key
+            ' Getting only first element to check whole list type
+            For Each Key in Members(Class_Object)
+                Key = Prefix & Key
+                Exit For
+            Next
 
-                Set FromRequest = Result
-            end if
+            Select Case Source(Key).Count
+                Case 0
+                    Set FromRequest = Nothing
+                Case 1
+                    For Each Key in Members(Class_Object)
+                        Key = Prefix & Key
+                        if not IsEmpty(Source(Key)) then
+                            Result(Key) = Source(Key)
+                        end if
+                    Next
+                    Set FromRequest = Result
+                Case Else
+                    Result = Array(Result)
+                    ' Avoiding new object (and inloop verification)
+                    For Each Key in Members(Class_Object)
+                        Key = Prefix & Key
+                        Result(0)(Key) = Source(1)(Key)
+                    Next
+
+                    For Index = Source(Key).Count - 1 To 1 Step -1
+                        Set Result(Index) = Class_Object.GetInstance()
+                        For Each Key in Members(Class_Object)
+                            Key = Prefix & Key
+                            Result(Index)(Key) = Source(Index + 1)(Key)
+                        Next
+                    Next
+                    FromRequest = Result
+            End Select
         End Function
         ' Creates/feeds Entities with a JSON string present on session Key.
         '
@@ -519,7 +540,7 @@ Class Reflection_Class_Loader
         ' @param {string} Class_
         ' @return {Reflection_Class}
         Public Function Load( ByVal Class_ )
-            Dim Result : Set Result = LoadClass(Entity)
+            Dim Result : Set Result = LoadClass(Class_)
             Dim Instance
 
             if not Result.IsInitialized then
@@ -529,7 +550,7 @@ Class Reflection_Class_Loader
 
             Set Load = Result
         End Function
-        
+
 End Class
 
 ' Default instance of Reflection_Class_Loader
