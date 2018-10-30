@@ -10,7 +10,7 @@
     Function function_exists( function_name )
         Dim procedure
 
-        call Err.Clear()
+        Err.Clear()
         On Error Resume Next
             Set procedure = GetRef(function_name)
 
@@ -24,7 +24,7 @@
     Function method_exists( object_, method_)
         Dim procedure
 
-        call Err.Clear()
+        Err.Clear()
         On Error Resume Next
             Execute "Set procedure =  GetRef(object_. " & method_ & ") "
 
@@ -38,7 +38,7 @@
     Function property_exists( object_, property_)
         Dim value
 
-        call Err.Clear()
+        Err.Clear()
         On Error Resume Next
             Execute "set_ value, object_." & property_
 

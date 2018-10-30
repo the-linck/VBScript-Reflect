@@ -117,11 +117,11 @@ Class Reflection_Class
     ' Destructor
         ' Simple destructor to erase the dictionaries.
         Sub Class_Terminate()
-            Call Static_Fields.RemoveAll()
+            Static_Fields.RemoveAll()
             Set Static_Fields = Nothing
             Static_Fields = Empty
 
-            Call Instance_Fields.RemoveAll()
+            Instance_Fields.RemoveAll()
             Set Instance_Fields = Nothing
             Instance_Fields = Empty
         End Sub
@@ -217,7 +217,7 @@ Class Reflection_Class_Loader
     ' Destructor
         ' Simple destructor to erase the Classes dictionary.
         Sub Class_Terminate()
-            Call Classes.RemoveAll()
+            Classes.RemoveAll()
             Set Classes = Nothing
             Classes = Empty
         End Sub

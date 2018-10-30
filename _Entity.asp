@@ -65,7 +65,7 @@ End Property
         set Class_ = Class_Loader(ClassName)
         if not Class_.IsInitialized then
             if method_exists(Me, "Static_Initialize") then
-                call Static_Initialize()
+                Static_Initialize()
             end if
 
             Class_.Name = ClassName
@@ -75,7 +75,7 @@ End Property
         if method_exists(Me, "Instance_Initialize") then
             ' Adding possibility of skipping initializer (for performance)
             if not Self.Field("Skip_Initializer") then
-                call Instance_Initialize()
+                Instance_Initialize()
             end if
         end if
     End Sub
@@ -94,43 +94,47 @@ End Property
     '
     ' @param {Scripting.Dictionary} Source
     ' @return {Object}
-    Public Function FromDictionary(Source)
-        Call Class_Loader.FromDictionary(Me, Source)
+    Public Function OfDictionary(Source)
+        Class_Loader.OfDictionary Me, Source
 
-        Set FromDictionary = Me
+        Set OfDictionary = Me
     End Function
     ' Creates/feeds Entities with data present on given Source.
     '
     ' @param {JSONobject|JSONarray|string} Source
     ' @return {Object|Object[]}
-    Public Function FromJSON(Source)
-        set_ FromJSON, Class_Loader.FromJSON(Me, Source)
+    Public Function OfJSON(Source)
+        Class_Loader.OfJSON Me, Source
+
+        Set OfJSON = Me
     End Function
     ' Creates/feeds Entities with data present on given request Method.
     ' Uses giver Prefix to identify fields names.
     '
     ' @param {string} Method [Form|Post|Querystring|Get]
     ' @return {Object}
-    Public Function FromRequest(Method)
-        Call Class_Loader.FromRequest(Me, Method, "")
+    Public Function OfRequest(Method)
+        Class_Loader.OfRequest Me, Method, ""
 
-        Set FromRequest = Me
+        Set OfRequest = Me
     End Function
     ' Creates/feeds Entities with a JSON string present on session Key.
     '
     ' @param {string} Key
     ' @return {Object|Object[]}
-    Public Function FromSession(Key)
-        Call Class_Loader.FromSession(Me, Key)
+    Public Function OfSession(Key)
+        Class_Loader.OfSession Me, Key
 
-        Set FromSession = Me
+        Set OfSession = Me
     End Function
     ' Creates/feeds Entities with data present on given Source.
     '
     ' @param {string} Source
     ' @return {Object|Object[]}
-    Public Function FromString(Source)
-        set_ FromString, Class_Loader.FromString(Me, Source)
+    Public Function OfString(Source)
+        Class_Loader.OfString Me, Source
+
+        Set OfString = Me
     End Function
 
 
