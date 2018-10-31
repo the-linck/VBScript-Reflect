@@ -250,6 +250,8 @@ Class Reflection_Class_Loader
                         else
                             Err.Raise 13, "Invalid Entity"
                         end if
+                    else
+                        Err.Raise 13, "Invalid Entity"
                     end if
             End Select
 
@@ -290,6 +292,8 @@ Class Reflection_Class_Loader
                         else
                             Err.Raise 13, "Invalid Entity"
                         end if
+                    else
+                        Err.Raise 13, "Invalid Entity"
                     end if
             End Select
 
@@ -362,6 +366,8 @@ Class Reflection_Class_Loader
                         else
                             Err.Raise 13, "Invalid Entity"
                         end if
+                    else
+                        Err.Raise 13, "Invalid Entity"
                     end if
             End Select
 
