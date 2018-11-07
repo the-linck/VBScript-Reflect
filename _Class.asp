@@ -310,20 +310,22 @@ Class Reflection_Class_Loader
                         Index = Source.length - 1
                         Redim Preserve Result(Index)
 
-                        ' Avoiding new object (and inloop verification)
-                        Set JSON = Source(0)
-                        For Each Key in Members(Class_Object)
-                            ' There's no way to know if the property exists in ASPJson
-                            Result(0)(Key) = JSON(Key)
-                        Next
-
-                        For Index = Index To 1 Step -1
-                            Set JSON = Source(Index)
-                            Set Result(Index) = Class_Object.GetInstance()
+                        if Index > -1 then
+                            ' Avoiding new object (and inloop verification)
+                            Set JSON = Source(0)
                             For Each Key in Members(Class_Object)
-                                Result(Index)(Key) = JSON(Key)
+                                ' There's no way to know if the property exists in ASPJson
+                                Result(0)(Key) = JSON(Key)
                             Next
-                        Next
+
+                            For Index = Index To 1 Step -1
+                                Set JSON = Source(Index)
+                                Set Result(Index) = Class_Object.GetInstance()
+                                For Each Key in Members(Class_Object)
+                                    Result(Index)(Key) = JSON(Key)
+                                Next
+                            Next
+                        end if
                         FromJSON = Result
                     Case "JSONobject"
                         For Each Key in Members(Class_Object)
